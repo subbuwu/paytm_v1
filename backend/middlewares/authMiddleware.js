@@ -1,8 +1,8 @@
-import { JWT_SECRET } from "../config/config"
-import { jwt } from "jsonwebtoken"
+import { JWT_SECRET } from "../config/config.js"
+import jwt from "jsonwebtoken"
 
 export const authMiddleware = async(req,res,next) => {
-    const authHeader = req.header.authorization
+    const authHeader = req.headers.authorization
 
     if(!authHeader || !authHeader.startsWith('Bearer' )){
         return res.status(401).json({

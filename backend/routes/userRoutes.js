@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { z } from "zod";
 import { User } from "../db/Schema.js";
-import { jwt } from "jsonwebtoken"
-import { JWT_SECRET } from "../config/config"
+import jwt from "jsonwebtoken"
+import { JWT_SECRET } from "../config/config.js"
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { updateUser } from "../controllers/updateUser.js";
 
 const router = Router();
 
@@ -13,6 +15,7 @@ const signupUserSchema = z.object({
     password: z.string().min(6),
 });
 
+//SIGN UP ROUTE  - POST
 router.post("/signup", async (req, res) => {
     try {
         const body = req.body;
@@ -52,6 +55,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+//SIGN IN ROUTE - POST
 router.post("/signin", async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -80,6 +84,9 @@ router.post("/signin", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
+//UPDATE USER - PUT
+router.put("/",authMiddleware,updateUser);
 
 
 
